@@ -8,8 +8,9 @@ desktop.ini
 
 # ツクール本体が自動生成するスクリプト
 # プラグインパラメータを保存したいのであれば、コメントアウト
-/js/plugins.js
-/data/System.json
+# /js/plugins.js
+# /data/System.json
+
 # エディタ用の無視設定
 /.vscode/
 #セーブデータ

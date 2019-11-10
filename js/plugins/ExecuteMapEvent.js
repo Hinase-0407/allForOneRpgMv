@@ -42,6 +42,7 @@
     Game_Interpreter.prototype.pluginCommand = function (command, args) {
         _Game_Interpreter_pluginCommand.call(this, command, args)
 
+        // ここからマップイベント発生のための処理を記入
         if (command === 'ExecuteMapEvent') {
             // イベント発動マスのエリアIDを取得
             var areaId = this.character(0).event().meta.areaId;
