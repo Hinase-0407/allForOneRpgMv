@@ -51,18 +51,20 @@
 
         // ここからマップイベント発生のための処理を記入
         if (command === 'ExecuteMapEvent') {
-            // メタ情報が登録されていない場合
-            if (!this.character(0).event().meta) $gameMessage.add("このイベントのメモ欄に情報がありません。\nメモ欄に「areaId」を記入するか、\n「ExecuteMap」の呼び出し処理を削除してください。\n");
-            else {
-                // イベント発動マスのエリアIDを取得
-                var areaId = this.character(0).event().meta.areaId;
-
-                if (!areaId) $gameMessage.add("エリアIDが設定されていません。\n\n\n");
-                $gameMessage.add(areaId);
-                // var event = new MapEvent(areaId);
-
-                // event.openWindow();
+            // メタ情報が登録されていない場合、後続の処理を実行しない.
+            if (!this.character(0).event().meta) {
+                $gameMessage.add("このイベントのメモ欄に情報がありません。\nメモ欄に「areaId」を記入するか、\n「ExecuteMap」の呼び出し処理を削除してください。\n");
+                return;
             }
+
+            // イベント発動マスのエリアIDを取得
+            var areaId = this.character(0).event().meta.areaId;
+
+            if (!areaId) $gameMessage.add("エリアIDが設定されていません。\n\n\n");
+            $gameMessage.add(areaId);
+            // var event = new MapEvent(areaId);
+
+            // event.openWindow();
         }
     }
 
