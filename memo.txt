@@ -1,0 +1,39 @@
+2019/10/22
+    21:00
+        WebSocketでMVとサーバー通信する
+        まずはサーバー側を準備する
+
+2019/10/26
+    19:00
+        イベントを特定の座標まで移動する
+            this.moveTowardCharacter({x:9, y:15});
+        キャラクターイベントを動的に生成する
+        動的に生成したイベントに対して下記を設定
+            ID
+            画像
+        イベント自身のIDを元にplayerMapを取得
+            移動スクリプトに渡されるthisにはイベント名が入っていない
+            thisはGame_Event
+        イベント名からイベントIDを取得する方法
+            1:
+                $dataMap.events.find(e => e.name === playerId)
+            2:
+                var event = DataManager.searchDataItem(isTemplate ? $dataTemplateEvents : $dataMap.events, 'name', convertEscapeCharacters(arg));    // modified by nekoma.
+                id = event ? event.id : 0;
+                $dataMap.events[3];
+            3:
+                $gameMap.event(eventId)
+        Plugin側から移動イベントを起こせるかやってみる
+        呼べたには呼べたが、連続で呼べちゃう
+
+    20:00
+        Mapに配置したイベントから呼ぶ
+            全イベントループしてnameを元にplyaerMapから座標を取得
+            取得できたものは移動
+            前提：イベントにplayerIdが設定されていること
+
+    22:00
+        Updateをマップイベントから呼び続けるようにした
+        playerMapの通りにイベントを移動させる。
+        サーバー接続時にplayerIndexに応じて自キャラを設定。
+        playerIndexに応じたイベントを削除。
