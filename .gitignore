@@ -25,13 +25,13 @@ desktop.ini
 /movies/
 
 #メインのスクリプト
-/js/libs/
-/js/rpg_core.js
-/js/rpg_managers.js
-/js/rpg_objects.js
-/js/rpg_scenes.js
-/js/rpg_sprites.js
-/js/rpg_windows.js
+# /js/libs/
+# /js/rpg_core.js
+# /js/rpg_managers.js
+# /js/rpg_objects.js
+# /js/rpg_scenes.js
+# /js/rpg_sprites.js
+# /js/rpg_windows.js
 
 #自分のプラグインのみをコミット対象にする設定
 #自作プラグインにプレフィックスなどを付けて、うまく制御してください。
