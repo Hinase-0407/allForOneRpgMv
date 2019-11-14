@@ -7,8 +7,25 @@
  * @author hinase
  * @varsion 1.0.0
  *
- * @help プラグインコマンドにこのプラグイン名を記入することで発動します。呼び出すイベントのメモ欄に"areaId"というメタデータを記入が必要です。
- * @memo 1.0.0 マップイベントクラス作成. 呼び出し処理追加. ウィンドウ開閉処理追加.(author by.hinase)
+ * @help
+ * すごろくのマス目にあたるイベントに次のプラグイン呼び出しコマンドを設定していきます.
+ * 呼び出すイベントのメモ欄に"areaId"というメタデータが必要です.
+ * 
+ * selectCommandBeforeMove
+ * 移動を開始するか,アイテムを使用するか選択するウィンドウを表示します.
+ * 
+ * startMove
+ * プレイヤーがフィールド上のマス目を移動できようになります.
+ * 
+ * ExecuteAreaEvent
+ * 移動を終了して,職業の給与と物件収入を獲得したあと,
+ * マス目にある物件に応じたイベントが発生します.
+ * 
+ * selectCommandAfterEvent
+ * 転職をするか,アイテムを使用するか選択するウィンドウを表示します.
+ * 
+ * 【更新履歴】
+ * Ver. 1.0.0   マップイベントクラス作成. 呼び出し処理追加. ウィンドウ開閉処理追加.(author by.hinase)
  */
 
 (function() {
@@ -19,6 +36,17 @@
      */
     var MapEvent = function(areaId) {
         this.areaId = areaId;
+    };
+
+    /**
+     * 職業の給与と物件収入をプレイヤーが獲得.
+     * @param {Object} player プレイヤー情報
+     */
+    MapEvent.prototype.getIncome = function(player) {
+        // 職業に応じたアイテムを獲得
+        // 職業の給与を算出
+        // 物件収入を算出
+        // 給与と収入を合計してプレイヤーの所持金に加算
     };
 
     /**
@@ -56,8 +84,8 @@
     };
 
     /**
-     * マップイベントを実施.
-     * @param {Object} player イベントを発生させたプレイヤー情報
+     * エリアイベントを実施.
+     * @param {Object} player プレイヤー情報
      */
     MapEvent.prototype.executeAreaEvent = function(player) {
         var areaId = this.areaId;
@@ -77,23 +105,18 @@
         _Game_Interpreter_pluginCommand.call(this, command, args)
 
         // マップ移動前のコマンド選択
-        if (command === 'MoveMap') {}
+        if (command === 'selectCommandBeforeMove') {
+            // 移動とアイテム使用コマンドを表示
+        }
 
         // マップ移動処理
-        else if (command === 'MoveMap') {
-            // 状態に応じて移動エリア数上限を設定
+        else if (command === 'startMove') {
+            // プレイヤーの状態に応じて移動エリア数上限を設定
             // プレイヤーのエリア移動数を0に初期化
         }
 
-        // 移動完了＆収入処理
-        else if (command === 'GetIncome') {
-            // マップ移動処理開始
-            // 状態に応じて移動エリア数上限を設定
-            // プレイヤーのエリア移動数を0に初期化
-        }
-
-        // エリア処理
-        else if (command === 'ExecuteMapEvent') {
+        // エリアイベント処理
+        else if (command === 'ExecuteAreaEvent') {
             // メタ情報が登録されていない場合、後続の処理を実行しない.
             if (!this.character(0).event().meta) {
                 $gameMessage.add("このイベントのメモ欄に情報がありません。\nメモ欄に「areaId」を記入するか、\n「ExecuteMap」の呼び出し処理を削除してください。\n");
@@ -103,13 +126,20 @@
             // イベント発動マスのエリアIDを取得
             var areaId = this.character(0).event().meta.areaId;
             // イベント実行中のプレイヤー情報を取得
-
+            var player = {};
             // マップイベント処理を実施
             var event = new MapEvent(areaId);
+
+            // event.getIncome(player);
             event.openAreaWindow();
             $gameMessage.add(areaId);   // テスト用としてテキストを表示
             // event.executeAreaEvent(player);
             event.closeAreaWindow();
+        }
+
+        // エリアイベント処理後のコマンド選択
+        else if (command === 'selectCommandAfterEvent') {
+            // 転職とアイテム使用コマンドを表示
         }
     }
 
