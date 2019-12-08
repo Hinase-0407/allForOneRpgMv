@@ -17,8 +17,12 @@
  * startMove
  * プレイヤーがフィールド上のマス目を移動できようになります.
  * 
- * ExecuteAreaEvent
+ * endMove
  * 移動を終了して,職業の給与と物件収入を獲得したあと,
+ * マス目にある物件に応じたイベントの準備を行います.
+ * 
+ * executeAreaEvent
+ * endMove直後に自動で発生する戦闘イベントに仕込むことで,
  * マス目にある物件に応じたイベントが発生します.
  * 
  * selectCommandAfterEvent
@@ -32,11 +36,8 @@
 
     /**
      * マップイベントクラス.
-     * @param {String} areaId イベントが発生するエリアID
      */
-    var MapEvent = function(areaId) {
-        this.areaId = areaId;
-    };
+    var MapEvent = function() {};
 
     /**
      * 職業の給与と物件収入をプレイヤーが獲得.
@@ -51,11 +52,10 @@
 
     /**
      * イベント用のウィンドウを表示.
+     * @param {String} areaId エリアID
      */
-    MapEvent.prototype.openAreaWindow = function() {
-        var areaId = this.areaId;
-    
-        // マップの背景表示用変数の定義.
+    MapEvent.prototype.settingAreaEvent = function(areaId) {
+        // 背景表示用変数の定義.
         var pictDown = "";
         var pictUp = "";
 
@@ -69,33 +69,40 @@
                 pictUp = "Forest";
                 break;
             }
-        
+
             default: {
                 pictDown = "Grassland";
                 pictUp = "Grassland";
                 break;
             }
         }
-
-        // マップの背景表示.
-        // ImageManager.loadBattleback1(pictDown);
-        // ImageManager.loadBattleback2(pictUp);
+        // 背景を設定
         $gameMap.changeBattleback(pictDown, pictUp);
+
+        // エリアIDを記録
+        $gameVariables.setValue(13, parseInt(areaId));
+
+        // マップイベントを戦闘イベントとして起動
+        BattleManager.setup(1,false,false);
+//        BattleManager.setEventCallback(function(n) {this._branch[this._indent] = n;}.bind(this));
+		$gamePlayer.makeEncounterCount();
+		SceneManager.push(Scene_Battle);
     };
 
     /**
      * エリアイベントを実施.
+     * @param {String} areaId エリアID
      * @param {Object} player プレイヤー情報
      */
-    MapEvent.prototype.executeAreaEvent = function(player) {
-        var areaId = this.areaId;
-    };
+    MapEvent.prototype.executeAreaEvent = function(areaId, player) {
+        $gameMessage.add(areaId + "のエリアイベント発生予定");
+        // エリア情報を取得
+        // エリアに所有者がいるか確認
+            // 所有者がプレイヤーなのか確認
+        // 施設イベント呼出
 
-    /**
-     * イベント用のウィンドウを閉じる.
-     */
-    MapEvent.prototype.closeAreaWindow = function() {
-        ImageManager.clear();
+        // イベント終了
+        BattleManager.abort();
     };
 
     // プラグインコマンドの登録
@@ -116,7 +123,7 @@
         }
 
         // エリアイベント処理
-        else if (command === 'ExecuteAreaEvent') {
+        else if (command === 'endMove') {
             // メタ情報が登録されていない場合、後続の処理を実行しない.
             if (!this.character(0).event().meta) {
                 $gameMessage.add("このイベントのメモ欄に情報がありません。\nメモ欄に「areaId」を記入するか、\n「ExecuteMap」の呼び出し処理を削除してください。\n");
@@ -125,17 +132,24 @@
 
             // イベント発動マスのエリアIDを取得
             var areaId = this.character(0).event().meta.areaId;
+
+            // マップイベント処理を実施
+            var event = new MapEvent();
+            // event.getIncome(player);
+            event.settingAreaEvent(areaId);
+        }
+
+        // エリアイベント処理
+        else if (command === 'executeAreaEvent') {
+            // イベント発動マスのエリアIDを取得
+            var areaId = "AR" + $gameVariables.value(13);
             // イベント実行中のプレイヤー情報を取得
             var player = {};
+
             // マップイベント処理を実施
             var event = new MapEvent(areaId);
-
-            // event.getIncome(player);
-            event.openAreaWindow();
-            $gameMessage.add(areaId);   // テスト用としてテキストを表示
-            // event.executeAreaEvent(player);
-            event.closeAreaWindow();
-        }
+            event.executeAreaEvent(areaId, player);
+       }
 
         // エリアイベント処理後のコマンド選択
         else if (command === 'selectCommandAfterEvent') {
