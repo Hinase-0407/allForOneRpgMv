@@ -1,4 +1,4 @@
 [
 null,
-{"id":1,"actions":[],"battlerHue":0,"battlerName":"","dropItems":[{"dataId":1,"denominator":1,"kind":0},{"dataId":1,"denominator":1,"kind":0},{"dataId":1,"denominator":1,"kind":0}],"exp":0,"traits":[],"gold":0,"name":"建築イベント","note":"","params":[1,0,1,1,1,1,1,1]}
+{"id":1,"actions":[],"battlerHue":0,"battlerName":"Actor1_3","dropItems":[{"dataId":1,"denominator":1,"kind":0},{"dataId":1,"denominator":1,"kind":0},{"dataId":1,"denominator":1,"kind":0}],"exp":0,"traits":[],"gold":0,"name":"建築イベント","note":"","params":[1,0,1,1,1,1,1,1]}
 ]

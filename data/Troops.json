@@ -1,4 +1,4 @@
 [
 null,
-{"id":1,"members":[],"name":"建築イベント","pages":[{"conditions":{"actorHp":50,"actorId":1,"actorValid":false,"enemyHp":50,"enemyIndex":0,"enemyValid":false,"switchId":1,"switchValid":false,"turnA":0,"turnB":0,"turnEnding":false,"turnValid":false},"list":[{"code":356,"indent":0,"parameters":["executeAreaEvent"]},{"code":0,"indent":0,"parameters":[]}],"span":0}]}
+{"id":1,"members":[{"enemyId":1,"x":408,"y":436,"hidden":false}],"name":"建築イベント","pages":[{"conditions":{"actorHp":50,"actorId":1,"actorValid":false,"enemyHp":50,"enemyIndex":0,"enemyValid":false,"switchId":4,"switchValid":true,"turnA":1,"turnB":0,"turnEnding":false,"turnValid":false},"list":[{"code":356,"indent":0,"parameters":["executeAreaEvent"]},{"code":0,"indent":0,"parameters":[]}],"span":2}]}
 ]

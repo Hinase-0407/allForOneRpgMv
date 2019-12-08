@@ -29,7 +29,7 @@
  * 転職をするか,アイテムを使用するか選択するウィンドウを表示します.
  * 
  * 【更新履歴】
- * Ver. 1.0.0   マップイベントクラス作成. 呼び出し処理追加. ウィンドウ開閉処理追加.(author by.hinase)
+ * Ver. 1.0.0   新規作成.(author by.hinase)
  */
 
 (function() {
@@ -80,13 +80,14 @@
         $gameMap.changeBattleback(pictDown, pictUp);
 
         // エリアIDを記録
-        $gameVariables.setValue(13, parseInt(areaId));
+        $gameVariables.setValue(13, parseInt(areaId.replace('AR','')));
 
         // マップイベントを戦闘イベントとして起動
+        $gameSwitches.setValue(4, true);
         BattleManager.setup(1,false,false);
 //        BattleManager.setEventCallback(function(n) {this._branch[this._indent] = n;}.bind(this));
-		$gamePlayer.makeEncounterCount();
-		SceneManager.push(Scene_Battle);
+    $gamePlayer.makeEncounterCount();
+    SceneManager.push(Scene_Battle);
     };
 
     /**
@@ -95,8 +96,8 @@
      * @param {Object} player プレイヤー情報
      */
     MapEvent.prototype.executeAreaEvent = function(areaId, player) {
-        $gameMessage.add(areaId + "のエリアイベント発生予定");
-
+        $gameMessage.add(areaId + 'のエリアイベント発生予定');
+/*
         // エリア情報を取得（serverのareaListからObjectを取得）
         var areaInfo;
         // 更地以外はserverのbuildingListからbuildMeiを取得
@@ -107,9 +108,7 @@
             '建築物：' + build + '\n' +
             '現在の所持金：' + player.money + '円';
         $gameMessage.add(message);
-
-        // イベント終了
-        BattleManager.abort();
+*/
     };
 
     // プラグインコマンドの登録
@@ -149,14 +148,19 @@
         // エリアイベント処理
         else if (command === 'executeAreaEvent') {
             // イベント発動マスのエリアIDを取得
-            var areaId = "AR" + $gameVariables.value(13);
+            var areaId = "AR" + ('000' + $gameVariables.value(13)).slice(-3);
             // イベント実行中のプレイヤー情報を取得
             var player = {};
 
             // マップイベント処理を実施
             var event = new MapEvent(areaId);
             event.executeAreaEvent(areaId, player);
-       }
+
+            // イベント終了
+            this.setWaitMode('message');
+            $gameSwitches.setValue(4, false);
+            BattleManager.abort();
+        }
 
         // エリアイベント処理後のコマンド選択
         else if (command === 'selectCommandAfterEvent') {
