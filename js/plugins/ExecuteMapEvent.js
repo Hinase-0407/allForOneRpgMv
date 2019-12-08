@@ -157,4 +157,15 @@
         }
     }
 
+    {
+        var areaInfo; // serverのareaListからObjectを取得
+        var build = areaInfo.buildId === 'BL000' ? 'なし' : '何かある';　// serverのbuildingListからbuildMeiを取得
+        var message =
+            '現在地：' + areaInfo.areaMei + '\n' +
+            '建築物：' + build + '\n' +
+            '現在の所持金：' + player.money + '円';
+        $gameMessage.add(message);
+        
+    }
+
 })()
