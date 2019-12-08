@@ -96,10 +96,17 @@
      */
     MapEvent.prototype.executeAreaEvent = function(areaId, player) {
         $gameMessage.add(areaId + "のエリアイベント発生予定");
-        // エリア情報を取得
-        // エリアに所有者がいるか確認
-            // 所有者がプレイヤーなのか確認
+
+        // エリア情報を取得（serverのareaListからObjectを取得）
+        var areaInfo;
+        // 更地以外はserverのbuildingListからbuildMeiを取得
+        var build = areaInfo.buildId === 'BL000' ? 'なし' : '何かある';
         // 施設イベント呼出
+        var message =
+            '現在地：' + areaInfo.areaMei + '\n' +
+            '建築物：' + build + '\n' +
+            '現在の所持金：' + player.money + '円';
+        $gameMessage.add(message);
 
         // イベント終了
         BattleManager.abort();
@@ -156,16 +163,4 @@
             // 転職とアイテム使用コマンドを表示
         }
     }
-
-    {
-        var areaInfo; // serverのareaListからObjectを取得
-        var build = areaInfo.buildId === 'BL000' ? 'なし' : '何かある';　// serverのbuildingListからbuildMeiを取得
-        var message =
-            '現在地：' + areaInfo.areaMei + '\n' +
-            '建築物：' + build + '\n' +
-            '現在の所持金：' + player.money + '円';
-        $gameMessage.add(message);
-        
-    }
-
 })()
