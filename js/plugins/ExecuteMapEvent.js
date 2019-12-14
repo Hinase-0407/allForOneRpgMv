@@ -98,6 +98,7 @@
     MapEvent.prototype.executeAreaEvent = function(areaId, player) {
         $gameMessage.add(areaId + 'のエリアイベント発生予定');
 /*
+        window.client.send("addGame", {});('getServerData', {key: 'getMapEvent1'});
         // エリア情報を取得（serverのareaListからObjectを取得）
         var areaInfo;
         // 更地以外はserverのbuildingListからbuildMeiを取得
