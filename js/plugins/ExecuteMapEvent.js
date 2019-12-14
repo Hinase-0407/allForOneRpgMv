@@ -62,6 +62,13 @@
         // 施設がある場合は、施設IDを参照に描画.
         // 更地の場合は、エリアIDを参照に描画.
         switch (areaId) {
+            case "AR000":
+            case "AR001":
+            case "AR002": {
+                pictDown = "Snowfield";
+                pictUp = "Snowfield";
+                break;
+            }
             case "AR005":
             case "AR006":
             case "AR007": {
@@ -69,7 +76,6 @@
                 pictUp = "Forest";
                 break;
             }
-
             default: {
                 pictDown = "Grassland";
                 pictUp = "Grassland";
