@@ -78,7 +78,15 @@ wss.on('connection', function(connection) {
                             direction: 5
                         });
 				}
-				send(connection, "initialize", playerMap[playerId]);
+				send(connection, "initialize", {
+                    playerMap: playerMap[playerId],
+                    master: {
+                        M_JOB_LIST: M_JOB_LIST,
+                        M_ITEM_LIST: M_ITEM_LIST,
+                        M_BUILDING_LIST: M_BUILDING_LIST,
+                        M_AREA_LIST: M_AREA_LIST
+                   }
+                });
 				break;
 			case "move" :
 				const player = playerMap[d.playerId] || {};
@@ -107,6 +115,9 @@ wss.on('connection', function(connection) {
             case "restHotel":
                 restHotel(d);
                 break;
+            case "getServerData":
+                getServerData(d);
+                break;
 		}
 	});
 	connection.on('close', function() {
@@ -116,6 +127,14 @@ wss.on('connection', function(connection) {
 });
 
 server.listen(PORT);
+
+/**
+ * サーバの情報をゲーム端末へ送信.
+ * @param {Object} data 
+ */
+function getServerData(data) {
+    (key)
+}
 // ----------------------------------------------------------------------
 // プレイヤーリストを取得.
 // ----------------------------------------------------------------------

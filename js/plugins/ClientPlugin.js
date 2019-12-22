@@ -1,6 +1,6 @@
 (function () {
     const PORT = 8009;
-    const DEBUG = false;
+    const DEBUG = true;
     const HOST = DEBUG ? "127.0.0.1" : "shironekodan.dip.jp";
     // ----------------------------------------------------------------------
     // クライアントの処理を扱うクラス.
@@ -23,10 +23,11 @@
                     break;
                 case "initialize" :
                     console.log($gamePlayer, d)
-                    console.log("initialize", d.characterName, d.characterIndex);
-                    $gamePlayer.locate(d.x, d.y);
-                    $gamePlayer.setImage(d.characterName, d.characterIndex);
+                    console.log("initialize", d.playerMap.characterName, d.playerMap.characterIndex);
+                    $gamePlayer.locate(d.playerMap.x, d.playerMap.y);
+                    $gamePlayer.setImage(d.playerMap.characterName, d.playerMap.characterIndex);
                     console.log($gamePlayer)
+                    self.setupMaster(d);
                     break;
                 case "setPlayerMap" :
                     self.playerMap = d.playerMap;
@@ -38,6 +39,13 @@
                     break;
             }
         };
+    }
+
+    // ----------------------------------------------------------------------
+    // マスター設定.
+    // ----------------------------------------------------------------------
+    Client.prototype.setupMaster = function(d) {
+        this.master = d.master;
     }
     // ----------------------------------------------------------------------
     // 送信.

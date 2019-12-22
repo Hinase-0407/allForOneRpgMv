@@ -102,27 +102,30 @@
      * @param {Object} player プレイヤー情報
      */
     MapEvent.prototype.executeAreaEvent = function(areaId, player) {
-        $gameMessage.add(areaId + 'のエリアイベント発生予定');
-/*
-        window.client.send("addGame", {});('getServerData', {key: 'getMapEvent1'});
-        // エリア情報を取得（serverのareaListからObjectを取得）
-        var areaInfo;
-        // 更地以外はserverのbuildingListからbuildMeiを取得
-        var build = areaInfo.buildId === 'BL000' ? 'なし' : '何かある';
-        // 施設イベント呼出
+        // オブジェクトのリスト（複数）で取得
+        // jobList = window.client.master.M_JOB_LIST.filter(m => m.name.indexOf('') >= 0);
+
+        // オブジェクト（単一）で取得
+        var areaInfo = window.client.master.M_AREA_LIST.find(m => m.areaId === areaId);
+        var buildInfo = window.client.master.M_BUILDING_LIST.find(m => m.buildId === areaInfo.buildId);
+
+        if (areaInfo === null || buildInfo === null) {
+            $gameMessage.add('エラーが発生しました。');
+            return false;
+        }
+
         var message =
-            '現在地：' + areaInfo.areaMei + '\n' +
-            '建築物：' + build + '\n' +
-            '現在の所持金：' + player.money + '円';
+            '現在地：' + areaInfo.areaMei + '\n'
+            + '建築物：' + (buildInfo.buildId === 'BL000') ? 'なし' : buildInfo.buildMei + '\n'
+            + '現在の所持金：' + player.money + '円';
         $gameMessage.add(message);
-*/
     };
 
     // プラグインコマンドの登録
     var _Game_Interpreter_pluginCommand = Game_Interpreter.prototype.pluginCommand
 
     Game_Interpreter.prototype.pluginCommand = function (command, args) {
-        _Game_Interpreter_pluginCommand.call(this, command, args)
+        _Game_Interpreter_pluginCommand.call(this, command, args);
 
         // マップ移動前のコマンド選択
         if (command === 'selectCommandBeforeMove') {
@@ -157,7 +160,7 @@
             // イベント発動マスのエリアIDを取得
             var areaId = "AR" + ('000' + $gameVariables.value(13)).slice(-3);
             // イベント実行中のプレイヤー情報を取得
-            var player = {};
+            var player = window.client.playerMap[window.client.playerId];
 
             // マップイベント処理を実施
             var event = new MapEvent(areaId);
