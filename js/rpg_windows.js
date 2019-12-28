@@ -1268,6 +1268,7 @@ Window_Selectable.prototype.redrawItem = function(index) {
 };
 
 Window_Selectable.prototype.redrawCurrentItem = function() {
+    console.log("[redrawCurrentItem]")
     this.redrawItem(this.index());
 };
 
@@ -1731,6 +1732,7 @@ Window_MenuStatus.prototype.loadImages = function() {
 };
 
 Window_MenuStatus.prototype.drawItem = function(index) {
+    console.log("[drawItem]", index)
     this.drawItemBackground(index);
     this.drawItemImage(index);
     this.drawItemStatus(index);
@@ -1794,6 +1796,7 @@ Window_MenuStatus.prototype.pendingIndex = function() {
 };
 
 Window_MenuStatus.prototype.setPendingIndex = function(index) {
+    console.log("[setPendingIndex]", index)
     var lastPendingIndex = this._pendingIndex;
     this._pendingIndex = index;
     this.redrawItem(this._pendingIndex);
@@ -2762,6 +2765,7 @@ Window_Options.prototype.volumeOffset = function() {
 };
 
 Window_Options.prototype.changeValue = function(symbol, value) {
+    console.log("[changeValue]", symbol, value)
     var lastValue = this.getConfigValue(symbol);
     if (lastValue !== value) {
         this.setConfigValue(symbol, value);

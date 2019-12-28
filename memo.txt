@@ -37,3 +37,18 @@
         playerMapの通りにイベントを移動させる。
         サーバー接続時にplayerIndexに応じて自キャラを設定。
         playerIndexに応じたイベントを削除。
+
+2019/12/08
+    18:00
+        Menuにサーバーのプレイヤー情報一覧を表示
+        SceneManager.updateMain
+        SceneManager.changeScene
+        Scene_Menu.prototype.create
+        Scene_Menu.prototype.createStatusWindow
+        Window_MenuStatus.prototype.initialize
+        Window_Selectable.prototype.refresh
+        Window_Selectable.prototype.drawAllItems
+        Window_Selectable.prototype.redrawItem
+        Window_MenuStatus.prototype.drawItem
+        Window_MenuStatus.prototype.drawItemStatus
+        drawActorSimpleStatus
