@@ -40,7 +40,8 @@ var CONST_INIT_STATUS = {
 
 var gameInfo = {
     turn: 1,
-    endTurn: 30
+    endTurn: 30,
+    playerCount: 8
 };
 
 var playerMap = {};
@@ -112,6 +113,9 @@ wss.on('connection', function(connection) {
 				player.x = d.x;
 				player.y = d.y;
 				player.direction = d.direction;
+                break;
+            case "setupGameInfo":
+                setupGameInfo(d);
                 break;
             case "turnEnd":
                 turnEnd(d);
@@ -242,6 +246,12 @@ function newUuid() {
 			d === "x" ? Math.floor(Math.random() * 16).toString(16) :
 			d === "y" ? (Math.floor(Math.random() * 4) + 8).toString(16) : d)
 		.join("");
+}
+// ----------------------------------------------------------------------
+// ゲーム開始時の設定.
+// ----------------------------------------------------------------------
+function setupGameInfo(d) {
+    Object.assign(gameInfo, d.gameInfo);
 }
 /**
  * ターン終了.
