@@ -121,11 +121,7 @@
 
     };
 
-    MapEvent.prototype.turnEnd = function(player) {
-        window.client.send('turnEnd', {});
-    }
-
-        // プラグインコマンドの登録
+    // プラグインコマンドの登録
     var _Game_Interpreter_pluginCommand = Game_Interpreter.prototype.pluginCommand
 
     Game_Interpreter.prototype.pluginCommand = function (command, args) {
@@ -186,7 +182,7 @@
             BattleManager.abort();
 
             // ターン終了（仮実装）
-            event.turnEnd(player);
+            window.client.send('turnEnd', {});
         }
 
         // エリアイベント処理後のコマンド選択
