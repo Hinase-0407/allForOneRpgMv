@@ -121,14 +121,28 @@
 
     };
 
-    // プラグインコマンドの登録
+    MapEvent.prototype.turnEnd = function(player) {
+
+    }
+
+        // プラグインコマンドの登録
     var _Game_Interpreter_pluginCommand = Game_Interpreter.prototype.pluginCommand
 
     Game_Interpreter.prototype.pluginCommand = function (command, args) {
         _Game_Interpreter_pluginCommand.call(this, command, args);
 
+        // ゲームスタート
+        if (command === 'setupGame') {
+            // サーバへ設定した値を送信する
+            window.client.send("setupGameInfo", {
+                turn: 1,
+                endTurn: $gameVariables.value(9),
+                playerCount: $gameVariables.value(10)
+            });
+        }
+
         // マップ移動前のコマンド選択
-        if (command === 'selectCommandBeforeMove') {
+        else if (command === 'selectCommandBeforeMove') {
             // 移動とアイテム使用コマンドを表示
         }
 
@@ -151,7 +165,6 @@
 
             // マップイベント処理を実施
             var event = new MapEvent();
-            // event.getIncome(player);
             event.settingAreaEvent(areaId);
         }
 
@@ -170,6 +183,9 @@
             this.setWaitMode('message');
             $gameSwitches.setValue(4, false);
             BattleManager.abort();
+
+            // ターン終了（仮実装）
+            event.turnEnd(player);
         }
 
         // エリアイベント処理後のコマンド選択
