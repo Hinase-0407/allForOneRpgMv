@@ -44,10 +44,9 @@
      * @param {Object} player プレイヤー情報
      */
     MapEvent.prototype.getIncome = function(player) {
-        // 職業に応じたアイテムを獲得
-        // 職業の給与を算出
-        // 物件収入を算出
-        // 給与と収入を合計してプレイヤーの所持金に加算
+        // 以下の情報を表示
+        // 収益情報（職業の給与・職業に応じた獲得アイテム・物件収入）
+        // プレイヤーの所持金・財産・順位
     };
 
     /**
@@ -116,9 +115,10 @@
 
         var message =
             '現在地：' + areaInfo.areaMei + '\n'
-            + '建築物：' + (buildInfo.buildId === 'BL000') ? 'なし' : buildInfo.buildMei + '\n'
-            + '現在の所持金：' + player.money + '円';
+            + '建築物：' + ((buildInfo.buildId === 'BL000') ? 'なし' : buildInfo.buildMei) + '\n'
+            + '現在の所持金：' + player.money + '円' + '\n';
         $gameMessage.add(message);
+
     };
 
     // プラグインコマンドの登録
