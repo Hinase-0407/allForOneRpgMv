@@ -21,7 +21,7 @@
         this.drawCharacter("Actor2", 2, x - 80, y + 2);
     };
 
-    Window_MenuStatus.prototype.maxItems = function() {
-        return window.client.;
-    };
+    // Window_MenuStatus.prototype.maxItems = function() {
+    //     return window.client.;
+    // };
 })();
