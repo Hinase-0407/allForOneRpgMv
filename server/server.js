@@ -22,6 +22,7 @@ var CONST_INIT_INFO = [
 ];
 
 var CONST_INIT_STATUS = {
+    status: 0, // 0:初期状態, 1:行動可能, 2:ターン終了
     money: 100, // TODO: 初期資金
     map: "AR014", // TODO: 初期位置
     job: "JR000", // TODO: 初期職業
@@ -46,12 +47,30 @@ var playerMap = {};
 var hostConnection = null;
 var connectionList = [];
 
+// ----------------------------------------------------------------------
+// 全プレイヤーがターン終了したかどうか.
+// ----------------------------------------------------------------------
+function checkTurnEnd() {
+    if (Object.keys(playerMap).length === 0) return false;
+    for (let playerId in playerMap) {
+        const player = playerMap[playerId];
+        if (player.status !== 2) return false;
+    }
+    return true;
+}
+// ----------------------------------------------------------------------
+// サーバー側の逐次処理.
+// ----------------------------------------------------------------------
 setInterval(function() {
+    console.log("[gameInfo]", gameInfo);
 	console.log(Object.keys(playerMap).map(id => {
 		return {playerId: id, playerIndex: playerMap[id].playerIndex};
 	}));
-	sendAll("setPlayerMap", {playerMap: playerMap});
+    sendAll("setPlayerMap", {playerMap: playerMap});
 }, 166);
+setInterval(() => {
+    if (checkTurnEnd()) turnProgress();
+}, 1000);
 
 wss.on('connection', function(connection) {
 	console.log('connected!');
@@ -93,7 +112,10 @@ wss.on('connection', function(connection) {
 				player.x = d.x;
 				player.y = d.y;
 				player.direction = d.direction;
-				break;
+                break;
+            case "turnEnd":
+                turnEnd(d);
+                break;
             case "turnProgress":
                 turnProgress();
                 break;
@@ -222,6 +244,12 @@ function newUuid() {
 		.join("");
 }
 /**
+ * ターン終了.
+ */
+function turnEnd(d) {
+    playerMap[d.playerId].status = 2; // ターン終了
+}
+/**
  * ターン経過.
  * 各プレイヤ : money +物件収入 & hp +2
  * ターン数: +1
@@ -230,9 +258,8 @@ function turnProgress() {
     console.log("next turn.");
     
     // 各プレイヤーに収益処理・体力回復
-    const keys = Object.keys(playerMap);
-    for (var i = 0; i < keys.length; i++) {
-        var player = playerMap(keys[i]);
+    for (let playerId in playerMap) {
+        var player = playerMap[playerId];
         // 物件収入
         var incomeByBuilds = sumIncomeByBuilds(player);
         player.money = fluctuationParamByInteger(player.money, incomeByBuilds, "money");
@@ -240,9 +267,12 @@ function turnProgress() {
         incomeByJob(player);
         // 体力回復処理
         player.params.hp = fluctuationParamByInteger(player.params.hp, 2, "hp");
+        player.status = 1; // 行動可能
     }
     // ターン数増加
     gameInfo.turn ++;
+
+    sendAll("turnProgress", {gameInfo: gameInfo});
 }
 /**
  * マップ移動.
