@@ -55,29 +55,29 @@
      */
     MapEvent.prototype.settingAreaEvent = function(areaId) {
         // 背景表示用変数の定義.
-        var pictDown = "";
-        var pictUp = "";
+        var pictDown = '';
+        var pictUp = '';
 
         // 施設がある場合は、施設IDを参照に描画.
         // 更地の場合は、エリアIDを参照に描画.
         switch (areaId) {
-            case "AR000":
-            case "AR001":
-            case "AR002": {
-                pictDown = "Snowfield";
-                pictUp = "Snowfield";
+            case 'AR000':
+            case 'AR001':
+            case 'AR002': {
+                pictDown = 'Snowfield';
+                pictUp = 'Snowfield';
                 break;
             }
-            case "AR005":
-            case "AR006":
-            case "AR007": {
-                pictDown = "Meadow";
-                pictUp = "Forest";
+            case 'AR005':
+            case 'AR006':
+            case 'AR007': {
+                pictDown = 'Meadow';
+                pictUp = 'Forest';
                 break;
             }
             default: {
-                pictDown = "Grassland";
-                pictUp = "Grassland";
+                pictDown = 'Grassland';
+                pictUp = 'Grassland';
                 break;
             }
         }
@@ -122,7 +122,7 @@
     };
 
     MapEvent.prototype.turnEnd = function(player) {
-
+        window.client.send('turnEnd', {});
     }
 
         // プラグインコマンドの登録
@@ -133,12 +133,13 @@
 
         // ゲームスタート
         if (command === 'setupGame') {
-            // サーバへ設定した値を送信する
-            window.client.send("setupGameInfo", {
+            const settingGameInfo = {
                 turn: 1,
-                endTurn: $gameVariables.value(9),
-                playerCount: $gameVariables.value(10)
-            });
+                endTurn: $gameVariables.value(10),
+                playerCount: $gameVariables.value(9)
+            };
+            // サーバへ設定した値を送信する
+            window.client.send('setupGameInfo', {gameInfo: settingGameInfo});
         }
 
         // マップ移動前のコマンド選択
@@ -156,7 +157,7 @@
         else if (command === 'endMove') {
             // メタ情報が登録されていない場合、後続の処理を実行しない.
             if (!this.character(0).event().meta) {
-                $gameMessage.add("このイベントのメモ欄に情報がありません。\nメモ欄に「areaId」を記入するか、\n「ExecuteMap」の呼び出し処理を削除してください。\n");
+                $gameMessage.add('このイベントのメモ欄に情報がありません。\nメモ欄に「areaId」を記入するか、\n「ExecuteMap」の呼び出し処理を削除してください。\n');
                 return;
             }
 
@@ -171,7 +172,7 @@
         // エリアイベント処理
         else if (command === 'executeAreaEvent') {
             // イベント発動マスのエリアIDを取得
-            var areaId = "AR" + ('000' + $gameVariables.value(13)).slice(-3);
+            var areaId = 'AR' + ('000' + $gameVariables.value(13)).slice(-3);
             // イベント実行中のプレイヤー情報を取得
             var player = window.client.playerMap[window.client.playerId];
 
