@@ -113,13 +113,6 @@
             return false;
         }
 
-        var message =
-            '現在地：' + areaInfo.areaMei + '\n'
-            + '建築物：' + ((buildInfo.buildId === 'BL000') ? 'なし' : buildInfo.buildMei) + '\n'
-            + '現在の所持金：' + player.money + '円' + '\n';
-        $gameMessage.add(message);
-        _Game_Interpreter.setWaitMode('message');
-
         var choicesFirstMapList = [
             {str: '買収する', event: ()=>{
                 $gameMessage.add('買収する');
@@ -140,6 +133,11 @@
         };
 
         _Game_Interpreter.setupChoicesForMapEvent([choicesFirstMapList,null,0,2,0], callOkHandler);
+        var message =
+            '現在地：' + areaInfo.areaMei + '\n'
+            + '建築物：' + ((buildInfo.buildId === 'BL000') ? 'なし' : buildInfo.buildMei) + '\n'
+            + '現在の所持金：' + player.money + '円' + '\n';
+        $gameMessage.add(message);
         _Game_Interpreter.setWaitMode('message');
     };
 
@@ -161,6 +159,7 @@
             choices[n].event();
             Window_ChoiceList.prototype.callOkHandler = callOkHandler;
         }.bind(this));
+        this.setWaitMode('message');
     };
 
     // プラグインコマンドの登録
@@ -170,7 +169,17 @@
         _Game_Interpreter_pluginCommand.call(this, command, args);
 
         // ゲームスタート
-        if (command === 'setupGame') {
+        if (command === 'setupCharacter') {
+            const settingCharacterInfo = {
+                playerName: $gameActors.actor(1).name(),
+                characterName: $gameActors.actor(1).characterName(),
+                characterIndex: $gameActors.actor(1).characterIndex()
+            }
+            // サーバへ設定した値を送信する
+            window.client.send('settingCharacterInfo', {characterInfo: settingCharacterInfo});
+        }
+
+        else if (command === 'setupGame') {
             const settingGameInfo = {
                 turn: 1,
                 endTurn: $gameVariables.value(10),
