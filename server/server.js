@@ -25,11 +25,15 @@ var CONST_INIT_INFO = [
 	{x: 15, y: 21, characterName: "Actor3", characterIndex: 6}
 ];
 
+var CONST_INIT_JOB = M_JOB_LIST.find(e => e.rankId === "JR000"); // TODO: 初期職業
+
 var CONST_INIT_STATUS = {
+    playerName: "",
     status: 0, // 0:初期状態, 1:行動可能, 2:ターン終了
     money: 100, // TODO: 初期資金
     map: "AR014", // TODO: 初期位置
-    job: "JR000", // TODO: 初期職業
+    job: CONST_INIT_JOB.rankId,
+    jobName: CONST_INIT_JOB.rankMei,
     team: null,
     itemList: [],
     params: {
@@ -123,8 +127,8 @@ wss.on('connection', function(connection) {
             case "setupGameInfo":
                 setupGameInfo(d);
                 break;
-            case "setupCharactor":
-                setupCharactor(d);
+            case "setupCharacter":
+                setupCharacter(d);
                 break;
             case "turnEnd":
                 turnEnd(d);
@@ -274,6 +278,12 @@ function reset() {
 // ----------------------------------------------------------------------
 function setupGameInfo(d) {
     Object.assign(gameInfo, d.gameInfo);
+}
+// ----------------------------------------------------------------------
+// ゲーム開始時のプレイヤー設定.
+// ----------------------------------------------------------------------
+function setupCharacter(d) {
+    Object.assign(playerMap[d.playerId], d.characterInfo);
 }
 /**
  * ターン終了.
