@@ -100,7 +100,7 @@
      * @param {String} areaId エリアID
      * @param {Object} player プレイヤー情報
      */
-    MapEvent.prototype.executeAreaEvent = function(areaId, player) {
+    MapEvent.prototype.executeAreaEvent = function(_Game_Interpreter, areaId, player) {
         // オブジェクトのリスト（複数）で取得
         // jobList = window.client.master.M_JOB_LIST.filter(m => m.name.indexOf('') >= 0);
 
@@ -118,7 +118,49 @@
             + '建築物：' + ((buildInfo.buildId === 'BL000') ? 'なし' : buildInfo.buildMei) + '\n'
             + '現在の所持金：' + player.money + '円' + '\n';
         $gameMessage.add(message);
+        _Game_Interpreter.setWaitMode('message');
 
+        var choicesFirstMapList = [
+            {str: '買収する', event: ()=>{
+                $gameMessage.add('買収する');
+            }},
+            {str: '利用する', event: ()=>{
+                $gameMessage.add('利用する');
+            }},
+            {str: '何もしない', event: ()=>{
+                $gameMessage.add('何もしない');
+            }}
+        ];
+
+        const callOkHandler = Window_ChoiceList.prototype.callOkHandler;
+        Window_ChoiceList.prototype.callOkHandler = function() {
+            $gameMessage.onChoice(this.index());
+            // this._messageWindow.terminateMessage();
+            this.close();
+        };
+
+        _Game_Interpreter.setupChoicesForMapEvent([choicesFirstMapList,null,0,2,0], callOkHandler);
+        _Game_Interpreter.setWaitMode('message');
+    };
+
+    Game_Interpreter.prototype.setupChoicesForMapEvent = function(params, callOkHandler) {
+        var choices = params[0].clone();
+        var cancelType = params[1];
+        var defaultType = params.length > 2 ? params[2] : 0;
+        var positionType = params.length > 3 ? params[3] : 2;
+        var background = params.length > 4 ? params[4] : 0;
+        if (cancelType >= choices.length) {
+            cancelType = -2;
+        }
+        $gameMessage.setChoices(choices.map(e => e.str), defaultType, cancelType);
+        $gameMessage.setChoiceBackground(background);
+        $gameMessage.setChoicePositionType(positionType);
+
+        $gameMessage.setChoiceCallback(function(n) {
+            this._branch[this._indent] = n;
+            choices[n].event();
+            Window_ChoiceList.prototype.callOkHandler = callOkHandler;
+        }.bind(this));
     };
 
     // プラグインコマンドの登録
@@ -174,7 +216,7 @@
 
             // マップイベント処理を実施
             var event = new MapEvent(areaId);
-            event.executeAreaEvent(areaId, player);
+            event.executeAreaEvent(this, areaId, player);
 
             // イベント終了
             this.setWaitMode('message');
