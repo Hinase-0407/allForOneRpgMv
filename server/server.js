@@ -9,10 +9,14 @@ var server = http.createServer(app);
 var wss = new WebSocketServer({server:server});
 
 var Util = require('./js/util.js');
-var M_JOB_LIST = require('./js/constants/m_job_list.js');
-var M_ITEM_LIST = require('./js/constants/m_item_list.js');
-var M_BUILDING_LIST = require('./js/constants/m_building_list.js');
-var M_AREA_LIST = require('./js/constants/m_area_list.js');
+var CONST_M_JOB_LIST = require('./js/constants/m_job_list.js');
+var CONST_M_ITEM_LIST = require('./js/constants/m_item_list.js');
+var CONST_M_BUILDING_LIST = require('./js/constants/m_building_list.js');
+var CONST_M_AREA_LIST = require('./js/constants/m_area_list.js');
+var M_JOB_LIST = [...CONST_M_JOB_LIST];
+var M_ITEM_LIST = [...CONST_M_ITEM_LIST];
+var M_BUILDING_LIST = [...CONST_M_BUILDING_LIST];
+var M_AREA_LIST = [...CONST_M_AREA_LIST];
 
 var CONST_INIT_INFO = [
 	{x: 12, y: 21, characterName: "Actor1", characterIndex: 0},
@@ -29,7 +33,8 @@ var CONST_INIT_STATUS = {
     team: null,
     itemList: [],
     params: {
-        hp: 100,
+        hp: 80,
+        maxHp: 100,
         power: 0,
         intellect: 0,
         sense: 0,
@@ -100,6 +105,7 @@ wss.on('connection', function(connection) {
 				}
 				send(connection, "initialize", {
                     playerMap: playerMap[playerId],
+                    gameInfo: gameInfo,
                     master: {
                         M_JOB_LIST: M_JOB_LIST,
                         M_ITEM_LIST: M_ITEM_LIST,
@@ -116,6 +122,9 @@ wss.on('connection', function(connection) {
                 break;
             case "setupGameInfo":
                 setupGameInfo(d);
+                break;
+            case "setupCharactor":
+                setupCharactor(d);
                 break;
             case "turnEnd":
                 turnEnd(d);
@@ -144,7 +153,10 @@ wss.on('connection', function(connection) {
             case "getServerData":
                 getServerData(d);
                 break;
-		}
+            case "reset":
+                reset(d);
+                break;
+            }
 	});
 	connection.on('close', function() {
 		console.log('disconnected...');
@@ -250,6 +262,16 @@ function newUuid() {
 // ----------------------------------------------------------------------
 // ゲーム開始時の設定.
 // ----------------------------------------------------------------------
+function reset() {
+    M_JOB_LIST = [...CONST_M_JOB_LIST];
+    M_ITEM_LIST = [...CONST_M_ITEM_LIST];
+    M_BUILDING_LIST = [...CONST_M_BUILDING_LIST];
+    M_AREA_LIST = [...CONST_M_AREA_LIST];
+    playerMap = {};
+}
+// ----------------------------------------------------------------------
+// ゲーム開始時の設定.
+// ----------------------------------------------------------------------
 function setupGameInfo(d) {
     Object.assign(gameInfo, d.gameInfo);
 }
@@ -282,7 +304,14 @@ function turnProgress() {
     // ターン数増加
     gameInfo.turn ++;
 
-    sendAll("turnProgress", {gameInfo: gameInfo});
+    if (gameInfo.turn === gameInfo.endTurn) {
+        sendAll("gameover", {
+            gameInfo: gameInfo,
+            playerMap: playerMap
+        });
+    } else {
+        sendAll("turnProgress", {gameInfo: gameInfo});
+    }
 }
 /**
  * マップ移動.

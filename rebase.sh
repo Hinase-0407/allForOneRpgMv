@@ -7,3 +7,4 @@ git rebase origin/master
 git reset --soft HEAD^
 git log -n 2
 rm tmp
+git add .
