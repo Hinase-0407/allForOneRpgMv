@@ -72,10 +72,6 @@ function checkTurnEnd() {
 // サーバー側の逐次処理.
 // ----------------------------------------------------------------------
 setInterval(function() {
-    console.log("[gameInfo]", gameInfo);
-	console.log(Object.keys(playerMap).map(id => {
-		return {playerId: id, playerIndex: playerMap[id].playerIndex};
-	}));
     sendAll("setPlayerMap", {playerMap: playerMap});
 }, 166);
 setInterval(() => {
