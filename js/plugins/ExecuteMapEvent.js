@@ -176,7 +176,7 @@
                 characterIndex: $gameActors.actor(1).characterIndex()
             }
             // サーバへ設定した値を送信する
-            window.client.send('settingCharacterInfo', {characterInfo: settingCharacterInfo});
+            window.client.send('setupCharacterInfo', {characterInfo: settingCharacterInfo});
         }
 
         else if (command === 'setupGame') {

@@ -127,8 +127,8 @@ wss.on('connection', function(connection) {
             case "setupGameInfo":
                 setupGameInfo(d);
                 break;
-            case "setupCharacter":
-                setupCharacter(d);
+            case "setupCharacterInfo":
+                setupCharacterInfo(d);
                 break;
             case "turnEnd":
                 turnEnd(d);
@@ -282,7 +282,7 @@ function setupGameInfo(d) {
 // ----------------------------------------------------------------------
 // ゲーム開始時のプレイヤー設定.
 // ----------------------------------------------------------------------
-function setupCharacter(d) {
+function setupCharacterInfo(d) {
     Object.assign(playerMap[d.playerId], d.characterInfo);
 }
 /**
