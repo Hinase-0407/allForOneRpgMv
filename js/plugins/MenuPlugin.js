@@ -1,9 +1,8 @@
 (function () {
-    
     Window_Base.prototype.drawActorName = function(player, x, y, width) {
         width = width || 168;
         this.changeTextColor(this.normalColor());
-        this.drawText("test", x, y, width);
+        this.drawText(player.playerName, x, y, width);
     };
 
     Window_Base.prototype.drawActorLevel = function(player, x, y) {
@@ -15,16 +14,17 @@
 
     Window_Base.prototype.drawActorIcons = function(player, x, y, width) {
         width = width || 144;
-        this.drawCharacter("Actor2", 2, x - 80, y + 2);
+        this.drawCharacter(player.characterName, player.characterIndex, x - 80, y + 2);
     };
 
     Window_Base.prototype.drawActorClass = function(player, x, y, width) {
         width = width || 168;
         this.resetTextColor();
-        this.drawText("{職業}", x, y, width);
+        this.drawText(player.jobName, x, y, width);
     };
 
     Window_Base.prototype.drawActorHp = function(player, x, y, width) {
+        if (!player) return;
         width = width || 186;
         var color1 = this.hpGaugeColor1();
         var color2 = this.hpGaugeColor2();
@@ -72,6 +72,7 @@
     };
     
     Window_Selectable.prototype.drawAllItems = function() {
+        console.log("[gameActors]", $gameActors, $gameActors.actor(1).name(), $gameActors.actor(1).characterName(), $gameActors.actor(1).characterIndex())
         var topIndex = this.topIndex();
         for (var i = 0; i < this.maxPageItems(); i++) {
             var index = topIndex + i;
