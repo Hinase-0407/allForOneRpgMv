@@ -1,29 +1,29 @@
 (function () {
-    Window_Base.prototype.drawActorName = function(player, x, y, width) {
+    Window_Base.prototype.drawActorNameForMenu = function(player, x, y, width) {
         width = width || 168;
         this.changeTextColor(this.normalColor());
         this.drawText(player.playerName, x, y, width);
     };
 
-    Window_Base.prototype.drawActorLevel = function(player, x, y) {
+    Window_Base.prototype.drawActorLevelForMenu = function(player, x, y) {
         this.changeTextColor(this.systemColor());
         this.drawText(TextManager.levelA, x, y, 48);
         this.resetTextColor();
         this.drawText("{レベル}", x + 84, y, 36, 'right');
     };
 
-    Window_Base.prototype.drawActorIcons = function(player, x, y, width) {
+    Window_Base.prototype.drawActorIconsForMenu = function(player, x, y, width) {
         width = width || 144;
         this.drawCharacter(player.characterName, player.characterIndex, x - 80, y + 2);
     };
 
-    Window_Base.prototype.drawActorClass = function(player, x, y, width) {
+    Window_Base.prototype.drawActorClassForMenu = function(player, x, y, width) {
         width = width || 168;
         this.resetTextColor();
         this.drawText(player.jobName, x, y, width);
     };
 
-    Window_Base.prototype.drawActorHp = function(player, x, y, width) {
+    Window_Base.prototype.drawActorHpForMenu = function(player, x, y, width) {
         if (!player) return;
         width = width || 186;
         var color1 = this.hpGaugeColor1();
@@ -40,11 +40,11 @@
         var lineHeight = this.lineHeight();
         var x2 = x + 180;
         var width2 = Math.min(200, width - 180 - this.textPadding());
-        this.drawActorName(player, x, y);
-        this.drawActorLevel(player, x, y + lineHeight * 1);
-        this.drawActorIcons(player, x, y + lineHeight * 2);
-        this.drawActorClass(player, x2, y);
-        this.drawActorHp(player, x2, y + lineHeight * 1, width2);
+        this.drawActorNameForMenu(player, x, y);
+        this.drawActorLevelForMenu(player, x, y + lineHeight * 1);
+        this.drawActorIconsForMenu(player, x, y + lineHeight * 2);
+        this.drawActorClassForMenu(player, x2, y);
+        this.drawActorHpForMenu(player, x2, y + lineHeight * 1, width2);
         // this.drawActorMp(actor, x2, y + lineHeight * 2, width2);
     };
 

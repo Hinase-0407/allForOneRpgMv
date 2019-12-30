@@ -124,6 +124,7 @@ wss.on('connection', function(connection) {
                 setupGameInfo(d);
                 break;
             case "setupCharacterInfo":
+                console.log("[setupCharacterInfo]", d)
                 setupCharacterInfo(d);
                 break;
             case "turnEnd":
@@ -293,7 +294,7 @@ function turnEnd(d) {
  * ターン数: +1
  */
 function turnProgress() {
-    console.log("next turn.");
+    console.log("[turnProgress] next turn.");
     
     // 各プレイヤーに収益処理・体力回復
     for (let playerId in playerMap) {
