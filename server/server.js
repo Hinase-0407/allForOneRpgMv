@@ -104,7 +104,8 @@ wss.on('connection', function(connection) {
                         });
 				}
 				send(connection, "initialize", {
-                    playerMap: playerMap[playerId],
+                    player: playerMap[playerId],
+                    playerMap: playerMap,
                     gameInfo: gameInfo,
                     master: {
                         M_JOB_LIST: M_JOB_LIST,

@@ -72,7 +72,8 @@
     };
     
     Window_Selectable.prototype.drawAllItems = function() {
-        console.log("[gameActors]", $gameActors, $gameActors.actor(1).name(), $gameActors.actor(1).characterName(), $gameActors.actor(1).characterIndex())
+        console.log("[dataMap]", $dataMap)
+        console.log("[gameMap]", $gameMap)
         var topIndex = this.topIndex();
         for (var i = 0; i < this.maxPageItems(); i++) {
             var index = topIndex + i;

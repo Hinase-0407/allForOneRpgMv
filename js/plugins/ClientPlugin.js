@@ -22,12 +22,14 @@
                     }
                     break;
                 case "initialize" :
-                    console.log($gamePlayer, d)
-                    console.log("initialize", d.playerMap.characterName, d.playerMap.characterIndex);
-                    $gamePlayer.locate(d.playerMap.x, d.playerMap.y);
-                    $gamePlayer.setImage(d.playerMap.characterName, d.playerMap.characterIndex);
-                    console.log($gamePlayer)
+                    console.log("[initialize]", d.player.characterName, d.player.characterIndex);
+                    $gamePlayer.locate(d.player.x, d.player.y);
+                    $gamePlayer.setImage(d.player.characterName, d.player.characterIndex);
                     self.setupMaster(d);
+                    Object.keys(d.playerMap).forEach(function(id) {
+                        const player = d.playerMap[id];
+                        self.changeCharacterImage(player);
+                    });
                     break;
                 case "setPlayerMap" :
                     self.playerMap = d.playerMap;
@@ -40,7 +42,17 @@
             }
         };
     }
-
+    // ----------------------------------------------------------------------
+    // キャラクター画像変更.
+    // ----------------------------------------------------------------------
+    Client.prototype.changeCharacterImage = function(player) {
+        let event = $dataMap.events.find(e => e !== null && e.name == player.playerIndex);
+        if (!event) return;
+        event = $gameMap.event(event.id);
+        event._characterName = player.characterName;
+        event._characterIndex = player.characterIndex;
+        // event.refresh();
+    };
     // ----------------------------------------------------------------------
     // マスター設定.
     // ----------------------------------------------------------------------

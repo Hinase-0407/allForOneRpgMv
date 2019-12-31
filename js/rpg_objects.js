@@ -6625,7 +6625,6 @@ Game_CharacterBase.prototype.characterIndex = function() {
 };
 
 Game_CharacterBase.prototype.setImage = function(characterName, characterIndex) {
-    console.log("setImage", characterName);
     this._tileId = 0;
     this._characterName = characterName;
     this._characterIndex = characterIndex;
