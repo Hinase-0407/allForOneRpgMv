@@ -28,9 +28,9 @@ var CONST_INIT_INFO = [
 var CONST_INIT_JOB = M_JOB_LIST.find(e => e.rankId === "JR000"); // TODO: 初期職業
 
 var CONST_INIT_STATUS = {
-    playerName: "",
+    playerName: "DefaultPlayerName",
     status: 0, // 0:初期状態, 1:行動可能, 2:ターン終了
-    money: 100, // TODO: 初期資金
+    money: 1000, // TODO: 初期資金
     map: "AR014", // TODO: 初期位置
     job: CONST_INIT_JOB.rankId,
     jobName: CONST_INIT_JOB.rankMei,
@@ -39,11 +39,14 @@ var CONST_INIT_STATUS = {
     params: {
         hp: 80,
         maxHp: 100,
-        power: 0,
-        intellect: 0,
-        sense: 0,
-        charm: 0,
-        moral: 0
+        power: 10,
+        intellect: 20,
+        sense: 30,
+        charm: 40,
+        moral: 50,
+        consumptionRate: 100,
+        discountRate: 100,
+        discountValue: 100
     }
 };
 
