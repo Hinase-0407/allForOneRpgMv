@@ -116,9 +116,15 @@
         var choicesFirstMapList = [
             {str: '買収する', event: ()=>{
                 $gameMessage.add('買収する');
+                _Game_Interpreter.setWaitMode('message');
+
+                $gameMessage.add('設置したい物件を選択してください。' + '\n\n\n');
             }},
             {str: '利用する', event: ()=>{
                 $gameMessage.add('利用する');
+            }},
+            {str: '発展する', event: ()=>{
+                $gameMessage.add('発展する');
             }},
             {str: '何もしない', event: ()=>{
                 $gameMessage.add('何もしない');
@@ -156,10 +162,9 @@
 
         $gameMessage.setChoiceCallback(function(n) {
             this._branch[this._indent] = n;
-            choices[n].event();
             Window_ChoiceList.prototype.callOkHandler = callOkHandler;
+            choices[n].event();
         }.bind(this));
-        this.setWaitMode('message');
     };
 
     // プラグインコマンドの登録
