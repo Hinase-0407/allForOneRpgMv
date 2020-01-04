@@ -237,8 +237,8 @@
             $gameSwitches.setValue(4, false);
             BattleManager.abort();
 
-            // ターン終了（仮実装）
-            window.client.send('turnEnd', {});
+            // ターン終了（施設利用有無情報も送信）
+            window.client.send('turnEnd', {useShisetsu: $gameSwitches.value(6)});
         }
 
         // エリアイベント処理後のコマンド選択

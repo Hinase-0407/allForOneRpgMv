@@ -424,17 +424,17 @@ function buyBuild(data) {
     var buyCost = (!area.playerId || area.playerId === data.playerId) ? 1 : 3;
     // 金額チェック
     var canBuy = build.cost * buyCost <= player.money;
-    // 建設条件チェック
-    var canBuild = (build.population <= area.population) && (build.security <= area.security);
+    // 建設条件チェック（廃止予定）
+    // var canBuild = (build.population <= area.population) && (build.security <= area.security);
     
     // 全てのチェックがOKだったら購入
-    if (canBuy && canBuild) {
+    if (canBuy/* && canBuild */) {
         player.money = fluctuationParamByInteger(player.money, (build.cost * buyCost), "money");
         area.playerId = data.playerId;
         area.buildId = data.buildId;
     } else {
-        if (!canBuy) console.log("購入費用が不足しています。");
-        if (!canBuild) console.log("施設設置条件を満たしていません。");
+        /* if (!canBuy) */console.log("購入費用が不足しています。");
+        // if (!canBuild) console.log("施設設置条件を満たしていません。");
     }
 }
 /**
