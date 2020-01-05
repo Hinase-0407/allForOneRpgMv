@@ -25,7 +25,8 @@ var m_building_list = [
     canUse: false,
     efficacy: {population: 3},
     memoEffect: '周辺地域の人口+3。',
-    memoBuild: '人々が生活する施設。周辺地域の人口が自動で増える。'
+    memoBuild: '人々が生活する施設。周辺地域の人口が自動で増える。',
+    tileId: [[56]],
   },
   {
     buildId: 'BL002',
@@ -39,7 +40,8 @@ var m_building_list = [
     canUse: false,
     efficacy: {population: 5},
     memoEffect: '周辺地域の人口+5。',
-    memoBuild: '人々が生活する施設が集まる土地。周辺地域の人口が結構増える。'
+    memoBuild: '人々が生活する施設が集まる土地。周辺地域の人口が結構増える。',
+    tileId: [[88, 89], [96, 97]]
   },
   {
     buildId: 'BL003',
