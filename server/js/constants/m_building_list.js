@@ -130,7 +130,7 @@ var m_building_list = [
   {
     buildId: 'BL009',
     buildMei: '旅館',
-    cost: 5000,
+    cost: 1000,//5000
     population: 10,
     security: 20,
     income: 20,
@@ -241,3 +241,19 @@ var m_building_list = [
   }
 ];
 module.exports = m_building_list;
+
+if ($gameVariables.value(14) !== 'やめる') {
+  switch (this._branch[this._indent]) {
+   case 0:
+    var buildInfo = window.client.master.M_BUILDING_LIST.find(m => m.buildMei === $gameVariables.value(14)); var buyCost = $gameVariables.value(15); var canBuy = buildInfo.cost * buyCost <= window.client.playerMap[window.client.playerId].money;
+    if (canBuy) {
+      window.client.send('buyBuild', {buildId: buildInfo.buildId});
+      window.client.playerMap[window.client.playerId].money = window.client.playerMap[window.client.playerId].money - (buildInfo.cost * buyCost); var areaId = 'AR' + ('000' + $gameVariables.value(13)).slice(-3); var areaIndex = window.client.master.M_AREA_LIST.findIndex(m => m.areaId === areaId); window.client.master.M_AREA_LIST[areaIndex].buildId = buildInfo.buildId; this._index = this._list.length; }
+    else {
+      $gameMessage.add('購入費用が不足しています。');
+      this.setWaitMode('message');
+    }
+    break;
+   case 1:
+     break;
+  };}
