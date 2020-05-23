@@ -246,4 +246,18 @@
             // 転職とアイテム使用コマンドを表示
         }
     }
+
+    // Shop Processing(base rpg_objects.js #10123)
+    Game_Interpreter.prototype.command302 = function() {
+//        if (!$gameParty.inBattle()) {
+            var goods = [this._params];
+            while (this.nextEventCode() === 605) {
+                this._index++;
+                goods.push(this.currentCommand().parameters);
+            }
+            SceneManager.push(Scene_Shop);
+            SceneManager.prepareNextScene(goods, this._params[4]);
+//        }
+        return true;
+    };
 })()
