@@ -76,9 +76,6 @@ function checkTurnEnd() {
 // サーバー側の逐次処理.
 // ----------------------------------------------------------------------
 setInterval(function() {
-    const t = getObjectByList(M_AREA_LIST, "areaId", "AR012");
-    if(t.buildId != 'BL000') console.log(t);
-
     sendAll("setPlayerMap", {
         playerMap: playerMap,
         gameInfo: gameInfo,
