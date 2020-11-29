@@ -69,13 +69,26 @@ function checkTurnEnd() {
         const player = playerMap[playerId];
         if (player.status !== 2) return false;
     }
+    console.log("[TurnEnd!]")
     return true;
 }
 // ----------------------------------------------------------------------
 // サーバー側の逐次処理.
 // ----------------------------------------------------------------------
 setInterval(function() {
-    sendAll("setPlayerMap", {playerMap: playerMap});
+    const t = getObjectByList(M_AREA_LIST, "areaId", "AR012");
+    if(t.buildId != 'BL000') console.log(t);
+
+    sendAll("setPlayerMap", {
+        playerMap: playerMap,
+        gameInfo: gameInfo,
+        master: {
+            M_JOB_LIST: M_JOB_LIST,
+            M_ITEM_LIST: M_ITEM_LIST,
+            M_BUILDING_LIST: M_BUILDING_LIST,
+            M_AREA_LIST: M_AREA_LIST
+       }
+});
 }, 166);
 setInterval(() => {
     if (checkTurnEnd()) turnProgress();
@@ -415,8 +428,8 @@ function useItem(data) {
  * @param {*} data
  */
 function buyBuild(data) {
-    console.log("buyBuild.");
     var player = playerMap[data.playerId];
+    console.log("buyBuild.", player.map);
     var area = getObjectByList(M_AREA_LIST, "areaId", player.map);
     var build = getObjectByList(M_BUILDING_LIST, "buildId", data.buildId);
     

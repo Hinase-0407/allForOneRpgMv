@@ -1,7 +1,7 @@
 (function () {
     const PORT = 8009;
     const DEBUG = true;
-    const HOST = DEBUG ? "127.0.0.1" : "shironekodan.dip.jp";
+    const HOST = DEBUG ? "192.168.10.123" : "shironekodan.dip.jp";
     // ----------------------------------------------------------------------
     // クライアントの処理を扱うクラス.
     // ----------------------------------------------------------------------
@@ -34,6 +34,7 @@
                 case "setPlayerMap" :
                     self.playerMap = d.playerMap;
                     if (!$gameVariables) break;
+                    self.setupMaster(d);
                     Object.keys(d.playerMap).forEach(function(id) {
                         const player = d.playerMap[id];
                         $gameVariables.setValue(player.playerIndex+1, {x: player.x, y: player.y});
