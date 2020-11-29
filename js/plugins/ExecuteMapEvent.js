@@ -216,6 +216,9 @@
             // イベント発動マスのエリアIDを取得
             var areaId = this.character(0).event().meta.areaId;
 
+            // イベント発動マスのエリアIDを取得
+            window.client.send("moveArea", {areaId: areaId});
+
             // マップイベント処理を実施
             var event = new MapEvent();
             event.settingAreaEvent(areaId);
