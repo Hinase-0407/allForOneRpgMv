@@ -162,4 +162,35 @@
         Window_Selectable.prototype.processOk.call(this);
     };
 
+    // ------------------------------------------------------------
+    // MAP画面で情報ウィンドウの表示制御等
+    // ------------------------------------------------------------
+    const _Scene_Map_create = Scene_Map.prototype.create;
+    Scene_Map.prototype.create = function() {
+        console.log("Scene_Map.prototype.create");
+        _Scene_Map_create.call(this);
+    };
+
+    const _Scene_Map_start = Scene_Map.prototype.start;
+    Scene_Map.prototype.start = function() {
+        console.log("Scene_Map.prototype.start");
+        _Scene_Map_start.call(this);
+
+        this.createWindowLayer();
+        this.createGameInfoWindow();
+    };
+
+    Scene_Map.prototype.createGameInfoWindow = function() {
+        console.log("Scene_Map.prototype.createGameInfoWindow");
+
+        var ww = 350;
+        var wh = 100;
+	
+        var wx = (Graphics.width - ww) / 2;
+        var wy = (Graphics.height - wh) / 2;
+ 
+        this._gameInfoWindow = new Window_Base(wx, wy, ww, wh);
+        this._gameInfoWindow.drawText("test", 0, 0, 300, 'right');
+        this.addWindow(this._gameInfoWindow);
+    };    
 })();
